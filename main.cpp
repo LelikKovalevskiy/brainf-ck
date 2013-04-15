@@ -173,6 +173,7 @@ int main()
         execute(code[counter],ptd,counter,dataStack,counterStack);
         ++counter;
     }
+    cout<<endl;
     return 0;
 }
 
