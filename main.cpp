@@ -11,7 +11,7 @@ struct Stack_int
 };
 struct Stack_pt
 {
-    int* info;
+    char* info;
     Stack_pt *next;
 }
 ;
@@ -32,7 +32,7 @@ void info()
     cout<<"\033[1;32m\033[5m\n"<<">"<<"\033[1;32m\033[25m";
 }
 ///////////////////////////////////////////////////////////////////////
-void push_pt(Stack_pt *&pStack,int* info)
+void push_pt(Stack_pt *&pStack,char* info)
 {
     Stack_pt *tmp = new Stack_pt;
     tmp->info=info;
@@ -45,7 +45,7 @@ void pop_pt(Stack_pt *&pStack)
     pStack=pStack->next;
     delete tmp;
 }
-int* on_top_pt(Stack_pt *pStack)
+char* on_top_pt(Stack_pt *pStack)
 {
     return pStack->info;
 }
@@ -67,13 +67,13 @@ int on_top_int(Stack_int *pStack)
     return pStack->info;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
-void cycle_begin(int *data,int counter,Stack_int *&counterStack,Stack_pt *&dataStack)
+void cycle_begin(char *data,int counter,Stack_int *&counterStack,Stack_pt *&dataStack)
 {
     push_int(counterStack,counter);
     push_pt(dataStack,data);
 
 }
-void cycle_end(int *data,int &counter,Stack_int *&counterStack,Stack_pt *&dataStack)
+void cycle_end(char *data,int &counter,Stack_int *&counterStack,Stack_pt *&dataStack)
 {
     if(*(on_top_pt(dataStack))==0)
     {
@@ -107,7 +107,7 @@ void read_commands(char *code)
         ++code;
     }
 }
-void execute(char code,int *&data, int &counter,Stack_pt *&dataStack,Stack_int *&counterStack)
+void execute(char code,char *&data, int &counter,Stack_pt *&dataStack,Stack_int *&counterStack)
 {
 
     if(code=='+')
@@ -155,22 +155,37 @@ void execute(char code,int *&data, int &counter,Stack_pt *&dataStack,Stack_int *
 
     }
 }
+void new_memory(char*&data,char *code)
+{
+    int counter=0;
+    int i=0;
+    while(*(code+i)!='e')
+    {
+       if (*(code+i)=='>')
+       ++counter;
+       ++i;
+    }
+    data=new char [counter+1];
+    cout<<"Счётчик: "<<counter<<endl;
+
+}
+
 int main()
 {
 
-    int data[10000]= {0};
+    char *data;
     char code[10000];
     char *ptc=code;
-    int *ptd=data;
     int counter=0;
     Stack_pt *dataStack;
     Stack_int *counterStack;
     info();
     read_commands(ptc);
+    new_memory(data,code);
     cout<<"Чтение завершено. Начинаю выполнение программы..."<<endl;
     while(code[counter]!='e')
     {
-        execute(code[counter],ptd,counter,dataStack,counterStack);
+        execute(code[counter],data,counter,dataStack,counterStack);
         ++counter;
     }
     cout<<endl;
