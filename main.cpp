@@ -166,7 +166,7 @@ void new_memory(char*&data,char *code)
        ++i;
     }
     data=new char [counter+1];
-    cout<<"Счётчик: "<<counter<<endl;
+ 
 
 }
 
